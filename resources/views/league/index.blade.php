@@ -78,14 +78,14 @@
                             <td>
                                 <table id="result">
                                     <tr>
-                                        <th>th Week Match Result</th>
+                                        <th><h5 class="week"></h5>th Week Match Result</th>
                                     </tr>
                                 </table>
                             </td>
                             <td>
                                 <table id="prediction">
                                     <tr>
-                                        <th>th Week Prediction of Championship</th>
+                                        <th><h5 class="week"></h5>th Week Prediction of Championship</th>
                                     </tr>
                                 </table>
                             </td>
@@ -97,4 +97,35 @@
         </div>
     </div>
 </body>
+<script
+  src="https://code.jquery.com/jquery-3.4.0.min.js"
+  integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="
+  crossorigin="anonymous"></script>
+<script type="text/javascript">
+    function show_league_table()
+        {
+            $.ajax({
+                type: "GET",
+                url:"table",
+                dataType: "json",
+                beforeSend: function() {
+                    //$('#response').html("<img src='/images/Preloader_2.gif' />");
+                },
+                success: function (data) {
+                    $.each(data.data,function(i,obj)
+                    {
+                        var table1 = "<tr><td>"+obj.name+"</td>" +
+                                "<td>"+obj.points+"</td>" +
+                                " <td>"+obj.played+"</td> " +
+                                " <td>"+obj.win+"</td> " +
+                                " <td>"+obj.draw+"</td> " +
+                                " <td>""</td> " +
+                                "<td>"+obj.goal_difference+"</td> </tr>";
+                        $("#c_wallpaper_list").append($(table1));
+                    });
+                    $('#response').hide();
+                }
+            });
+        }
+</script>
 </html>

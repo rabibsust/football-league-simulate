@@ -20,6 +20,7 @@ class CreateLeagueTablesTable extends Migration
             $table->integer('played');
             $table->integer('win');
             $table->integer('draw');
+            $table->integer('lost')->nullable();
             $table->integer('goal_difference');
             $table->timestamps();
         });
