@@ -14,10 +14,10 @@ class MatchResult extends Model
         $loser1='';
         $winner2='';
         $loser2='';
-        $score1 = $scores[0];
-        $score2 = $scores[1];
-        $score1 = explode(":", $score1);
-        $score2 = explode(":", $score2);
+        $mscore1 = $scores[0];
+        $mscore2 = $scores[1];
+        $score1 = explode(":", $mscore1);
+        $score2 = explode(":", $mscore2);
         $res_1 = $score1[1];
         $res_2 = $score2[1];
         $team1 = $score1[0];
@@ -60,8 +60,8 @@ class MatchResult extends Model
             $loser2 = $team3;
         }
         MatchResult::insert([
-            ['winning_team'=> $winner1, 'losing_team'=> $loser1, 'week'=> $week, 'goal_difference'=>$goal_diff1, 'result'=>$res_1],
-            ['winning_team'=> $winner2, 'losing_team'=> $loser2, 'week'=> $week, 'goal_difference'=>$goal_diff2, 'result'=>$res_2],
+            ['winning_team'=> $winner1, 'losing_team'=> $loser1, 'week'=> $week, 'goal_difference'=>$goal_diff1, 'result'=> $mscore1],
+            ['winning_team'=> $winner2, 'losing_team'=> $loser2, 'week'=> $week, 'goal_difference'=>$goal_diff2, 'result'=> $mscore2],
         ]);
         $result = MatchResult::where(['week'=> $week])->get();
         return $result;

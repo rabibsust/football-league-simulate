@@ -18,12 +18,18 @@ class LeagueController extends Controller
 
     public function show_tables()
     {
-        return LeagueTable::get();
+        $latest_week = MatchResult::max('week');
+        if ($latest_week == null) {
+            $latest_week = 0;
+        }
+        $league_data = LeagueTable::orderBy('points', 'desc')->get();
+        return ['week'=> $latest_week, 'data'=>$league_data];
     }
 
     public function match_results()
     {
         $result = MatchResult::get();
+        
         return $result;
     }
 
@@ -58,20 +64,25 @@ class LeagueController extends Controller
     public function simulate_weekly_res(Request $request)
     {
         $week = $request->week;
-        $simulate = new Simulate();
-        $scores = $simulate->week_match_simulate($week);
-        $league_table = new LeagueTable();
-        $match_res = new MatchResult();
-        $match_results = $match_res->insert_result( $scores, $week);
-        $league_update = $league_table->insert_league_data($match_results);
-        $teams = new Teams();
-        $teams->update_data($match_results);
-        return LeagueTable::get();
+       // dd( );
+        if (MatchResult::where(['week' => $week])->count() == 0) {
+            $simulate = new Simulate();
+            $scores = $simulate->week_match_simulate($week);
+            $league_table = new LeagueTable();
+            $match_res = new MatchResult();
+            $match_results = $match_res->insert_result($scores, $week);
+            $league_table->insert_league_data($match_results);
+            $teams = new Teams();
+            $teams->update_data($match_results);
+            return 'success';
+        }
+        
+        
     }
 
     public function simulate_all_res()
     {
-        Artisan::call( 'migrate:fresh --seed');
+        Artisan::call('migrate:fresh --seed');
         $simulate = new Simulate();
         $scores = $simulate->match_simulate();
         $league_table = new LeagueTable();
