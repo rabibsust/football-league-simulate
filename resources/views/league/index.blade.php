@@ -158,6 +158,7 @@
             },
             success: function (data) {
                 show_result_table(data.week);
+                show_prediction(data.week)
                 $.each(data.data,function(i,obj)
                 {
                     var table1 = "<tr class='items'><td>"+obj.name+"</td>" +
@@ -179,6 +180,7 @@
 
     function show_result_table(week)
     {
+        $('.res-item').remove();
         $.ajax({
             type: "GET",
             url:"weekly",
@@ -190,18 +192,11 @@
                 //$('#response').html("<img src='/images/Preloader_2.gif' />");
             },
             success: function (data) {
-                console.log(data);
-                // $.each(data.data,function(i,obj)
-                // {
-                //     var table1 = "<tr><td>"+obj.name+"</td>" +
-                //             "<td>"+obj.points+"</td>" +
-                //             " <td>"+obj.played+"</td> " +
-                //             " <td>"+obj.win+"</td> " +
-                //             " <td>"+obj.draw+"</td> " +
-                //             " <td></td> " +
-                //             "<td>"+obj.goal_difference+"</td> </tr>";
-                //     $("table#result").append($(table1));
-                // });
+                $.each(data,function(i,obj)
+                {
+                    var table1 = "<tr class='res-item'><td>"+obj.result+"</td></tr>";
+                    $("table#result").append($(table1));
+                });
             }
         });
     }
@@ -231,6 +226,27 @@
             },
             success: function (data) {
                 show_league_table();
+            }
+        });
+    }
+
+    function show_prediction(week){
+        $.ajax({
+            type: "GET",
+            url:"prediction",
+            dataType: "json",
+            data: { 
+                week: week
+            },
+            beforeSend: function() {
+                //$('#response').html("<img src='/images/Preloader_2.gif' />");
+            },
+            success: function (data) {
+                $.each(data,function(i,obj)
+                {
+                    var table1 = "<tr class='res-item'><td>"+ i + " " +parseInt(obj)+"%</td></tr>";
+                    $("table#prediction").append($(table1));
+                });
             }
         });
     }

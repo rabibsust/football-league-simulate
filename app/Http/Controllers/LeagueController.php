@@ -37,24 +37,32 @@ class LeagueController extends Controller
     {
         $week = $request->week;
         $result = MatchResult::where(['week' => $week])->get();
+        foreach ($result as $item) {
+            $item->result = str_replace(":", " ", $item->result);
+        }
         return $result;
     }
 
     public function prediction(Request $request)
     {
-        $table = Teams::get();
         $league_table = LeagueTable::get();
-        //dd( $league_table);
-        if($request->week > 4){
+        if($request->week > 3){
             $all_morale = 0;
-            foreach($table as $key=>$item){
-                $all_morale += $league_table[$key]->points;
+            $all_data = [];
+            foreach ($league_table as $item) { $all_morale += $item->points; }
+            
+            foreach( $league_table as $item){
+                $goal_diff = (Integer) $item->goal_difference;
+                if ($goal_diff > 0) {
+                    $all_data[$item->name] = (($item->points + $goal_diff) / $all_morale) * 100;
+                }
+                else {
+                    $all_data[ $item->name] = (($item->points) / $all_morale) * 100;
+                }
+                
             }
-           $lfc_percent = (( $league_table[0]->points )/ $all_morale ) * 100;
-            $che_percent = (( $league_table[1]->points)/ $all_morale ) * 100;
-            $manc_percent = (( $league_table[2]->points)/ $all_morale ) * 100;
-            $ars_percent = (( $league_table[3]->points)/ $all_morale ) * 100;
-            return [ 'lfc'=> $lfc_percent, 'che' => $che_percent, 'manc'=> $manc_percent, 'ars'=> $ars_percent];
+            
+            return $all_data;
         }
         else{
             return '';

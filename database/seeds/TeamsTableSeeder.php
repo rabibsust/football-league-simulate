@@ -16,10 +16,10 @@ class TeamsTableSeeder extends Seeder
         DB::table('teams')->truncate();
 
         Teams::insert([
-                ['name' => 'Liverpool', 'strength' => 98, 'morale' => 98],
-                ['name' => 'Chelsea', 'strength' => 96, 'morale' => 90],
-                ['name' => 'Manchester City', 'strength' => 99, 'morale' => 99],
-                ['name' => 'Arsenal', 'strength' => 90, 'morale' => 92]
+                ['name' => 'Liverpool', 'strength' => 97, 'morale' => 50],
+                ['name' => 'Chelsea', 'strength' => 96, 'morale' => 50],
+                ['name' => 'Manchester City', 'strength' => 98, 'morale' => 50],
+                ['name' => 'Arsenal', 'strength' => 95, 'morale' => 50]
             ]
         );
     }
