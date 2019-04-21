@@ -225,7 +225,8 @@
                 week: week
             },
             success: function (data) {
-                show_league_table();
+                //show_league_table();
+                location.reload();
             }
         });
     }
