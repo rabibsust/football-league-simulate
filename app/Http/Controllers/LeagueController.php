@@ -90,7 +90,10 @@ class LeagueController extends Controller
 
     public function simulate_all_res()
     {
-        Artisan::call('migrate:fresh --seed');
+        LeagueTable::truncate();
+        MatchResult::truncate();
+        Teams::truncate();
+        Artisan::call('db:seed');
         $simulate = new Simulate();
         $scores = $simulate->match_simulate();
         $league_table = new LeagueTable();
